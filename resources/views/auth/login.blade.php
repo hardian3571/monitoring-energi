@@ -44,12 +44,14 @@
             z-index: 1;
         }
 
+        /* PERBAIKAN FOTO: Dinaikkan lagi dan bayangan ditipiskan */
         .login-header-image {
             width: 100%;
             height: 160px; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            background-position: center 70%; 
+            /* 1. Fokus dinaikkan kembali ke atas (sebelumnya 70%) */
+            background-position: center 20%; 
             position: relative;
         }
 
@@ -57,7 +59,8 @@
             content: '';
             position: absolute;
             bottom: 0; left: 0; width: 100%; 
-            height: 35%; 
+            /* 2. Tinggi bayangan putih dikurangi drastis (sebelumnya 35%) */
+            height: 15%; 
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         }
 
@@ -70,18 +73,16 @@
             z-index: 2; 
         }
 
-        /* PERBAIKAN GRUP JUDUL & LOGO */
         .header-title-wrapper {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            /* Margin dinaikkan dari -30px ke -5px agar ada gap dengan background atas */
-            margin-top: -5px; 
+            /* 3. Margin ditarik sedikit ke atas agar menyatu dengan sisa fade putih */
+            margin-top: -15px; 
             margin-bottom: 25px;
             width: 100%;
         }
 
-        /* Membagi ruang jadi 3 agar teks TENGAH SEMPURNA */
         .logo-kiri, .logo-kanan {
             flex: 1;
             display: flex;
@@ -97,19 +98,19 @@
         }
 
         .logo-kiri img {
-            height: 45px; /* Logo PKT Kiri */
+            height: 45px; 
             width: auto;
             object-fit: contain;
         }
 
         .logo-kanan img {
-            height: 28px; /* LOGO MANSET KANAN DIKECILKAN */
+            height: 28px; /* Tetap kecil sesuai permintaan sebelumnya */
             width: auto;
             object-fit: contain;
         }
 
         .title-text-group {
-            flex: 3; /* Memberi ruang lebih besar untuk teks di tengah */
+            flex: 3; 
             text-align: center;
             padding: 0 10px;
         }
@@ -129,7 +130,6 @@
             font-weight: 600;
         }
 
-        /* SISA CSS TETAP SAMA */
         .input-group {
             margin-bottom: 18px;
             position: relative;
