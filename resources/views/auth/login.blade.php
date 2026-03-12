@@ -16,7 +16,7 @@
             font-family: 'Inter', sans-serif;
             
             /* BACKGROUND UTAMA: bg-pkt.jpg */
-            background-image: url('{{ asset("images/bg-pkt.jpg") }}');
+            background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
