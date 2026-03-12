@@ -5,6 +5,8 @@
 <script>
     // Data Grafik dikirim per tahun (Series)
     window.chartSeries = @json($chartSeries);
+    // Data Total Per Tahun untuk Grafik Tahunan
+    window.totalPerTahun = @json($totalPerTahun);
     // Warna warni grafik (sama seperti PLTS)
     window.chartColors = ['#f97316', '#94a3b8', '#facc15', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#db2777', '#f43f5e', '#6366f1'];
     // Data Raw untuk Edit
@@ -15,9 +17,14 @@
     body.preload * { transition: none !important; }
     
     /* STYLE UTAMA (Mirip PLTS) */
-    .res-header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    .res-header { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; flex-wrap: wrap; gap: 10px; }
     .res-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
     
+    /* UTILS RESPONSIVE BARU */
+    .flex-wrap-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; }
+    .action-btns-container { display: flex; flex-wrap: wrap; gap: 5px; }
+    .chart-container { position: relative; height: 400px; width: 100%; }
+
     /* TABEL MATRIX */
     .ss4-table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     .ss4-table th { background: #1e293b; color: white; padding: 12px; text-align: center; font-size: 0.85rem; border-right: 1px solid #334155; }
@@ -60,7 +67,7 @@
         <div style="display: flex; align-items: center; gap: 15px;">
             <h1 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #2c3e50;"><i class="fa-solid fa-industry" style="color:#facc15;"></i> REKAP LISTRIK SS-4</h1>
         </div>
-        <form method="GET" action="{{ route('ss4.index') }}" style="display: flex; gap: 10px;">
+        <form method="GET" action="{{ route('ss4.index') }}" style="display: flex; gap: 10px; flex-wrap: wrap;">
             <select name="year" onchange="this.form.submit()" style="padding: 8px; border-radius: 6px; border: 1px solid #d1d5db;">
                 <option value="All Years">Semua Tahun</option>
                 @foreach($dropdownYears as $y) 
@@ -76,7 +83,7 @@
     @if($hasData)
         <div class="res-grid-3">
             <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 20px; border-radius: 12px; color: white;">
-                <div style="font-size:0.8rem; font-weight:600; opacity:0.9;">TOTAL SUPLAI (All Time)</div>
+                <div style="font-size:0.8rem; font-weight:600; opacity:0.9;">TOTAL SUPLAI ({{ $selectedYear }})</div>
                 <div style="font-size:2rem; font-weight:800; margin-top:5px;">{{ number_format($grandTotal, 0, ',', '.') }} <span style="font-size:1rem;">kWh</span></div>
             </div>
             <div style="background: linear-gradient(135deg, #10b981, #059669); padding: 20px; border-radius: 12px; color: white;">
@@ -90,21 +97,33 @@
         </div>
 
         <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 30px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                <h4 style="margin:0; color:#334155;">GRAFIK KWH (Perbandingan Tahunan)</h4>
-                <button onclick="downloadChart()" style="border:1px solid #ddd; background:#f8fafc; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-camera"></i> PNG</button>
+            <div class="flex-wrap-header">
+                <h4 style="margin:0; color:#334155;">GRAFIK KWH (Trend Bulanan)</h4>
+                <button onclick="downloadChart('chartSs4', 'Grafik_Bulanan_SS4')" style="border:1px solid #ddd; background:#f8fafc; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-camera"></i> PNG</button>
             </div>
-            <div style="height: 400px;">
+            <div class="chart-container">
                 <canvas id="chartSs4"></canvas>
             </div>
         </div>
 
+        @if($selectedYear == 'All Years')
+        <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 30px;">
+            <div class="flex-wrap-header">
+                <h4 style="margin:0; color:#334155;">GRAFIK TOTAL KWH (Perbandingan Tahunan)</h4>
+                <button onclick="downloadChart('chartTotalSs4', 'Grafik_Tahunan_SS4')" style="border:1px solid #ddd; background:#f8fafc; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-camera"></i> PNG</button>
+            </div>
+            <div class="chart-container" style="height: 350px;">
+                <canvas id="chartTotalSs4"></canvas>
+            </div>
+        </div>
+        @endif
+
         <form action="{{ route('ss4.delete') }}" method="POST" id="deleteForm" onsubmit="return confirm('Yakin ingin menghapus data?')">
         @csrf
         <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0;">
-            <div style="display:flex; justify-content:space-between; align-items: center; margin-bottom: 15px;">
+            <div class="flex-wrap-header">
                 <h4 style="margin:0; color:#334155;">Detail Data (Matrix)</h4>
-                <div style="display: flex; gap: 5px;">
+                <div class="action-btns-container">
                     <button type="button" onclick="downloadTable('csv')" class="btn-action btn-csv"><i class="fa-solid fa-file-csv"></i> CSV</button>
                     <button type="button" onclick="downloadTable('excel')" class="btn-action btn-excel"><i class="fa-solid fa-file-excel"></i> Excel</button>
                     
@@ -268,7 +287,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // 1. SETUP CHART
+    // 1. SETUP CHART BULANAN (YANG LAMA)
     const ctx = document.getElementById('chartSs4');
     if(ctx && window.chartSeries) {
         const datasets = [];
@@ -305,7 +324,39 @@
         });
     }
 
-    // 2. LOGIC PILIH DATA & SELECT ALL
+    // 2. SETUP CHART TOTAL TAHUNAN (YANG BARU)
+    const ctxTotal = document.getElementById('chartTotalSs4');
+    if(ctxTotal && window.totalPerTahun) {
+        // Karena object JS tidak selalu urut, kita pastikan array-nya urut berdasarkan tahun
+        const sortedYears = Object.keys(window.totalPerTahun).sort();
+        const dataValues = sortedYears.map(year => window.totalPerTahun[year]);
+
+        new Chart(ctxTotal.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: sortedYears,
+                datasets: [{
+                    label: 'Total KWH',
+                    data: dataValues,
+                    backgroundColor: '#10b981', // Hijau keren
+                    borderRadius: 4,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }, // Sembunyikan legend karena hanya ada 1 dataset
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } }
+                },
+                interaction: { mode: 'index', intersect: false }
+            }
+        });
+    }
+
+    // 3. LOGIC PILIH DATA & SELECT ALL
     let isSelectionMode = false;
     
     // Toggle Tombol "Pilih"
@@ -372,8 +423,15 @@
         if(btnDelete) btnDelete.style.display = any ? 'inline-flex' : 'none';
     }
 
-    // 3. UTILS LAINNYA
-    function downloadChart() { const c = document.getElementById('chartSs4'); const l = document.createElement('a'); l.download = 'Grafik_SS4.png'; l.href = c.toDataURL(); l.click(); }
+    // 4. UTILS LAINNYA
+    // Fungsi dinamis untuk download chart manapun (Bulanan atau Tahunan)
+    function downloadChart(canvasId, fileName) { 
+        const c = document.getElementById(canvasId); 
+        const l = document.createElement('a'); 
+        l.download = fileName + '.png'; 
+        l.href = c.toDataURL(); 
+        l.click(); 
+    }
     
     function openEditModal() { 
         document.getElementById('editModal').style.display = 'flex'; 
