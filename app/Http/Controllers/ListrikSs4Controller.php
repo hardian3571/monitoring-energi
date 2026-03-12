@@ -12,7 +12,7 @@ class ListrikSs4Controller extends Controller
     {
         // 1. SETUP TAHUN
         $startYear = 2015;
-        $endYear = 2030;
+        $endYear = 2026;
         $dropdownYears = range($startYear, $endYear);
         
         $selectedYear = $request->input('year', 'All Years');
