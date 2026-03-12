@@ -15,8 +15,8 @@
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
             
-            /* BACKGROUND UTAMA: bg-pkt.jpg */
-            background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
+            /* BACKGROUND UTAMA: banner.jpg */
+            background-image: url('{{ asset("images/banner.jpg") }}');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -38,26 +38,25 @@
         /* CONTAINER KARTU LOGIN UTAMA */
         .login-wrapper {
             display: flex;
-            flex-direction: row; /* Sejajar kiri-kanan di Desktop */
+            flex-direction: row; 
             width: 90%;
-            max-width: 1000px; /* Lebar maksimal kartu */
+            max-width: 1000px; 
             background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
-            overflow: hidden; /* Biar gambar banner tidak keluar dari lengkungan */
+            overflow: hidden; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             z-index: 1;
         }
 
-        /* SISI KIRI: BANNER (banner.jpg) */
+        /* SISI KIRI: BANNER bg-pkt.jpg */
         .login-banner {
-            flex: 1.2; /* Proporsi lebar lebih besar sedikit dari form */
-            background-image: url('{{ asset("images/banner.jpg") }}');
+            flex: 1.2; 
+            background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
             background-position: center center;
             position: relative;
         }
 
-        /* Overlay opsional di atas banner kalau mau dikasih teks */
         .banner-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -73,12 +72,20 @@
             justify-content: center;
         }
 
-        /* Logo Perusahaan */
-        .login-logo {
-            /* Pastikan nama file logo sesuai, misal logo.png */
-            width: 130px;
-            height: auto;
-            margin-bottom: 20px;
+        /* ========================================= */
+        /* CSS BARU UNTUK 2 LOGO BERDAMPINGAN        */
+        /* ========================================= */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Jarak antara logo PKT dan logo Manset */
+            margin-bottom: 25px;
+        }
+
+        .logo-wrapper img {
+            max-height: 55px; /* Atur tinggi ini jika logo kekecilan/kebesaran */
+            width: auto;
+            object-fit: contain;
         }
 
         .login-title {
@@ -189,20 +196,21 @@
             text-align: left;
         }
 
-        /* ========================================= */
-        /* RESPONSIVE UNTUK HP (MOBILE VIEW)         */
-        /* ========================================= */
+        /* RESPONSIVE UNTUK HP */
         @media (max-width: 768px) {
             .login-wrapper {
-                flex-direction: column; /* Berubah jadi numpuk atas-bawah */
+                flex-direction: column; 
                 width: 95%;
             }
             .login-banner {
-                min-height: 200px; /* Di HP, banner jadi header kecil di atas */
+                min-height: 200px; 
                 width: 100%;
             }
             .login-form-container {
-                padding: 30px 20px; /* Padding dikecilkan untuk layar sempit */
+                padding: 30px 20px; 
+            }
+            .logo-wrapper {
+                justify-content: flex-start; /* Pastikan di HP tetap rata kiri */
             }
         }
     </style>
@@ -219,7 +227,10 @@
 
         <div class="login-form-container">
             
-            <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT" class="login-logo">
+            <div class="logo-wrapper">
+                <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
+                <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
+            </div>
             
             <h1 class="login-title">Manajemen Aset</h1>
             <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
