@@ -116,7 +116,7 @@
                 </div>
             </div>
 
-            <div style="overflow-x: auto;">
+          <div style="overflow-x: auto;">
     @if($selectedYear == 'All Years')
         <table class="ss4-table" id="tableSs4">
             <thead>
@@ -200,6 +200,22 @@
                 </tr>
             </tbody>
         </table>
+            </div>
+        </div>
+        </form>
+
+    @else
+        <div class="empty-state-box">
+            <i class="fa-regular fa-folder-open" style="font-size: 3.5rem; color: #cbd5e1;"></i>
+            <h3 style="margin:0; color: #64748b;">Belum ada data</h3>
+            <p style="margin:5px 0 0 0; color: #94a3b8;">Silakan Import CSV atau Input Manual.</p>
+            @if(auth()->user()->role == 'admin')
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button onclick="openEditModal()" class="btn-action btn-edit"><i class="fa-solid fa-plus-circle"></i> Input Manual</button>
+                <button onclick="document.getElementById('uploadModal').style.display='flex'" class="btn-action btn-blue"><i class="fa-solid fa-file-csv"></i> Import CSV</button>
+            </div>
+            @endif
+        </div>
     @endif
 </div>
 
