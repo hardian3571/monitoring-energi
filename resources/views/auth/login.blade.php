@@ -11,71 +11,94 @@
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
+            width: 100%;
+            min-height: 100vh;
             font-family: 'Inter', sans-serif;
-            /* ======================================================= */
-            /* GANTI URL DI BAWAH INI DENGAN PATH GAMBAR BACKGROUND MU */
-            /* ======================================================= */
-            background-image: url('{{ asset('images/bg-pabrik.jpeg') }}');
-            background-position: center;
+            
+            /* BACKGROUND UTAMA: bg-pkt.jpg */
+            background-image: url('{{ asset("images/bg-pkt.jpg") }}');
+            background-size: cover;
+            background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-        }
-
-        /* Overlay gelap agar background tidak menutupi teks */
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6); /* Warna biru gelap transparan */
+            
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
         }
 
-        /* Desain Kartu Login (Glassmorphism) */
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
+        /* Overlay gelap untuk body agar Background Utama tidak terlalu mencolok */
+        .page-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); /* Biru gelap transparan */
+            z-index: 0;
+        }
+
+        /* CONTAINER KARTU LOGIN UTAMA */
+        .login-wrapper {
+            display: flex;
+            flex-direction: row; /* Sejajar kiri-kanan di Desktop */
+            width: 90%;
+            max-width: 1000px; /* Lebar maksimal kartu */
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            overflow: hidden; /* Biar gambar banner tidak keluar dari lengkungan */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        /* SISI KIRI: BANNER (banner.jpg) */
+        .login-banner {
+            flex: 1.2; /* Proporsi lebar lebih besar sedikit dari form */
+            background-image: url('{{ asset("images/banner.jpg") }}');
+            background-size: cover;
+            background-position: center center;
+            position: relative;
+        }
+
+        /* Overlay opsional di atas banner kalau mau dikasih teks */
+        .banner-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(234, 88, 12, 0.4), rgba(15, 23, 42, 0.2));
+        }
+
+        /* SISI KANAN: FORM LOGIN */
+        .login-form-container {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         /* Logo Perusahaan */
         .login-logo {
-            /* ============================================== */
-            /* GANTI URL DI BAWAH INI DENGAN PATH LOGO PKT MU */
-            /* Contoh: src="{{ asset('images/logo-pkt.png') }}" */
-            /* ============================================== */
-            width: 120px;
+            /* Pastikan nama file logo sesuai, misal logo.png */
+            width: 130px;
             height: auto;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .login-title {
             margin: 0 0 5px 0;
             color: #1e293b;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 800;
             text-transform: uppercase;
         }
 
         .login-subtitle {
-            margin: 0 0 25px 0;
+            margin: 0 0 30px 0;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
         }
 
         /* Input Form */
         .input-group {
             margin-bottom: 20px;
-            text-align: left;
             position: relative;
         }
 
@@ -100,7 +123,7 @@
 
         .input-group input:focus {
             outline: none;
-            border-color: #f97316; /* Warna Oranye khas PKT */
+            border-color: #f97316;
             box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
             background: #fff;
         }
@@ -127,7 +150,7 @@
         /* Tombol Login */
         .btn-login {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: linear-gradient(135deg, #f97316, #ea580c);
             color: white;
             border: none;
@@ -137,6 +160,7 @@
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2);
+            margin-top: 10px;
         }
 
         .btn-login:hover {
@@ -149,26 +173,51 @@
         .alert-error {
             background: #fee2e2;
             color: #991b1b;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             font-size: 0.85rem;
             margin-bottom: 20px;
             border: 1px solid #f87171;
-            text-align: left;
+            font-weight: 600;
         }
 
         /* Footer */
         .login-footer {
-            margin-top: 25px;
+            margin-top: 30px;
             font-size: 0.75rem;
             color: #94a3b8;
+            text-align: left;
+        }
+
+        /* ========================================= */
+        /* RESPONSIVE UNTUK HP (MOBILE VIEW)         */
+        /* ========================================= */
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column; /* Berubah jadi numpuk atas-bawah */
+                width: 95%;
+            }
+            .login-banner {
+                min-height: 200px; /* Di HP, banner jadi header kecil di atas */
+                width: 100%;
+            }
+            .login-form-container {
+                padding: 30px 20px; /* Padding dikecilkan untuk layar sempit */
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="overlay">
-        <div class="login-card">
+    <div class="page-overlay"></div>
+
+    <div class="login-wrapper">
+        
+        <div class="login-banner">
+            <div class="banner-overlay"></div>
+        </div>
+
+        <div class="login-form-container">
             
             <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT" class="login-logo">
             
