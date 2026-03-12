@@ -14,20 +14,18 @@
             width: 100%;
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
-            
-            /* BACKGROUND UTAMA LUAR: banner.jpg */
             background-image: url('{{ asset("images/banner.jpg") }}');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Mencegah scroll tersembunyi */
+            overflow: hidden; 
         }
 
-        /* Overlay gelap untuk memfokuskan mata ke kartu */
         .page-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -35,12 +33,10 @@
             z-index: 0;
         }
 
-        /* KARTU LOGIN */
         .login-wrapper {
             display: flex;
             flex-direction: column;
             width: 90%;
-            /* 1. KOTAK DIPERLEBAR AGAR TIDAK KURUS */
             max-width: 550px; 
             background: #ffffff;
             border-radius: 20px;
@@ -49,30 +45,28 @@
             z-index: 1;
         }
 
-        /* HEADER FOTO */
+        /* HEADER FOTO DIPENDEKKAN & DI-CROP ATASNYA */
         .login-header-image {
             width: 100%;
-            aspect-ratio: 2116 / 1190; 
+            /* Mengubah aspect-ratio menjadi fixed height agar tidak kepanjangan */
+            height: 160px; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            /* 2. FOKUS FOTO DIATUR BIAR YANG DUDUK LEBIH KELIATAN */
-            background-position: center 35%; 
+            /* Menggeser fokus foto ke bawah (memotong bagian atas) */
+            background-position: center 70%; 
             position: relative;
         }
 
-        /* Efek Fade Out putih ke arah form */
         .login-header-image::after {
             content: '';
             position: absolute;
             bottom: 0; left: 0; width: 100%; 
-            /* 3. SHADOW PUTIH DIKURANGI DARI 40% JADI 25% */
-            height: 25%; 
+            height: 35%; 
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         }
 
-        /* FORM LOGIN */
         .login-form-container {
-            padding: 0px 40px 40px 40px; 
+            padding: 0px 40px 30px 40px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -80,44 +74,45 @@
             z-index: 2; 
         }
 
-        /* WADAH LOGO */
-        .logo-wrapper {
+        /* GRUP JUDUL & LOGO KIRI KANAN */
+        .header-title-wrapper {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 25px;
-            /* 4. LOGO DITURUNKAN KE BAWAH (MENDEKATI FORM PUTIH) */
-            margin-top: -10px; 
+            justify-content: space-between; /* Menjauhkan logo ke sisi kiri & kanan */
+            margin-top: -30px; /* Menarik elemen ke atas menyatu dengan fade foto */
             margin-bottom: 20px;
         }
 
-        .logo-wrapper img {
-            max-height: 50px;
+        .header-title-wrapper img {
+            max-height: 45px; /* Menjaga ukuran logo agar rapi */
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .title-text-group {
+            flex-grow: 1;
+            text-align: center;
+            padding: 0 10px;
         }
 
         .login-title {
-            margin: 0 0 5px 0;
+            margin: 0 0 2px 0;
             color: #1e293b;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
             text-transform: uppercase;
-            text-align: center;
         }
 
         .login-subtitle {
-            margin: 0 0 25px 0;
+            margin: 0;
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            text-align: center;
         }
 
-        /* Input Form */
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             position: relative;
         }
 
@@ -166,7 +161,6 @@
 
         .password-toggle:hover { color: #f97316; }
 
-        /* Tombol Login */
         .btn-login {
             width: 100%;
             padding: 14px;
@@ -188,7 +182,6 @@
             box-shadow: 0 6px 12px rgba(234, 88, 12, 0.3);
         }
 
-        /* Error Message */
         .alert-error {
             background: #fee2e2;
             color: #991b1b;
@@ -201,21 +194,22 @@
             text-align: center;
         }
 
-        /* Footer */
         .login-footer {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 0.75rem;
             color: #94a3b8;
             text-align: center;
         }
 
-        /* RESPONSIVE UNTUK HP */
         @media (max-width: 480px) {
             .login-form-container {
-                padding: 0px 25px 30px 25px; 
+                padding: 0px 25px 25px 25px; 
             }
-            .logo-wrapper {
-                margin-top: -10px;
+            .login-title {
+                font-size: 1.1rem;
+            }
+            .header-title-wrapper img {
+                max-height: 35px; /* Logo sedikit dikecilkan di HP */
             }
         }
     </style>
@@ -230,13 +224,16 @@
 
         <div class="login-form-container">
             
-            <div class="logo-wrapper">
+            <div class="header-title-wrapper">
                 <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
+                
+                <div class="title-text-group">
+                    <h1 class="login-title">Manajemen Aset</h1>
+                    <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
+                </div>
+
                 <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
             </div>
-            
-            <h1 class="login-title">Manajemen Aset</h1>
-            <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
 
             @if($errors->any())
                 <div class="alert-error">
