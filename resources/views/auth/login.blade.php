@@ -16,7 +16,7 @@
             /* ======================================================= */
             /* GANTI URL DI BAWAH INI DENGAN PATH GAMBAR BACKGROUND MU */
             /* ======================================================= */
-            background-image: url('{{ asset('images/bg-pabrik.jpg') }}');
+            background-image: url('{{ asset('images/bg-pabrik.jpeg') }}');
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -170,7 +170,7 @@
     <div class="overlay">
         <div class="login-card">
             
-            <img src="{{ asset('logo-pkt.png') }}" alt="Logo PKT" class="login-logo">
+            <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT" class="login-logo">
             
             <h1 class="login-title">Manajemen Aset</h1>
             <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
