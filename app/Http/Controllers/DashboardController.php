@@ -19,7 +19,7 @@ class DashboardController extends Controller
         }
 
         // 2. SETUP FILTER (TAHUN & BULAN)
-        $startYear = 2021;
+        $startYear = 2015;
         $endYear = 2030;
         $dropdownYears = range($startYear, $endYear); // Variable untuk dropdown
         $years = $dropdownYears; // Variable alias untuk view trend
