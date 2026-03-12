@@ -40,7 +40,8 @@
             display: flex;
             flex-direction: column;
             width: 90%;
-            max-width: 500px; /* Sedikit dilebarkan biar fotonya makin lega */
+            /* 1. KOTAK DIPERLEBAR AGAR TIDAK KURUS */
+            max-width: 550px; 
             background: #ffffff;
             border-radius: 20px;
             overflow: hidden; 
@@ -48,35 +49,35 @@
             z-index: 1;
         }
 
-        /* ========================================= */
-        /* HEADER FOTO (ANTI KEPOTONG)               */
-        /* ========================================= */
+        /* HEADER FOTO */
         .login-header-image {
             width: 100%;
-            /* Trik ajaib: Proporsi disamakan persis dengan ukuran asli gambar */
             aspect-ratio: 2116 / 1190; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            background-position: center top; /* Fokus ke tengah-atas biar kepala aman */
+            /* 2. FOKUS FOTO DIATUR BIAR YANG DUDUK LEBIH KELIATAN */
+            background-position: center 35%; 
             position: relative;
         }
 
-        /* Efek Fade Out halus dari gambar ke putih form */
+        /* Efek Fade Out putih ke arah form */
         .login-header-image::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 40%;
+            bottom: 0; left: 0; width: 100%; 
+            /* 3. SHADOW PUTIH DIKURANGI DARI 40% JADI 25% */
+            height: 25%; 
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         }
 
         /* FORM LOGIN */
         .login-form-container {
-            padding: 0px 40px 40px 40px; /* Padding atas di-0 kan karena sudah ada efek fade */
+            padding: 0px 40px 40px 40px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
-            z-index: 2; /* Biar tetap di atas efek fade */
+            z-index: 2; 
         }
 
         /* WADAH LOGO */
@@ -85,7 +86,8 @@
             align-items: center;
             justify-content: center;
             gap: 25px;
-            margin-top: -30px; /* Narik logo agak ke atas menabrak efek fade */
+            /* 4. LOGO DITURUNKAN KE BAWAH (MENDEKATI FORM PUTIH) */
+            margin-top: -10px; 
             margin-bottom: 20px;
         }
 
@@ -93,7 +95,7 @@
             max-height: 50px;
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); /* Bayangan tipis di logo */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
 
         .login-title {
@@ -213,7 +215,7 @@
                 padding: 0px 25px 30px 25px; 
             }
             .logo-wrapper {
-                margin-top: -20px;
+                margin-top: -10px;
             }
         }
     </style>
