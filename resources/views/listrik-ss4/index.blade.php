@@ -117,64 +117,89 @@
             </div>
 
             <div style="overflow-x: auto;">
-                <table class="ss4-table" id="tableSs4">
-                    <thead>
-                        <tr>
-                            <th class="col-check" style="background:#f1f5f9; z-index:20;">
-                                <input type="checkbox" id="chkSelectAll" title="Pilih Semua">
-                            </th>
-                            
-                            <th style="min-width:120px; z-index:20;">Bulan</th>
-                            @foreach($dropdownYears as $yr) <th>{{ $yr }}</th> @endforeach
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; @endphp
-                        @foreach($months as $num => $mName)
-                            <tr>
-                                <td class="col-check"><i class="fa-solid fa-arrow-right" style="color:#cbd5e1;"></i></td>
-                                <td style="text-align:left; font-weight:600;">{{ $mName }}</td>
-                                @foreach($dropdownYears as $yr)
-                                    @php 
-                                        $val = $matrix[$num][$yr]['val'] ?? 0; 
-                                        $id  = $matrix[$num][$yr]['id'] ?? null;
-                                    @endphp
-                                    <td>
-                                        <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
-                                            @if($id && auth()->user()->role == 'admin') <input type="checkbox" name="ids[]" value="{{ $id }}" class="chk-item col-check"> @endif
-                                            <span style="{{ $val==0 ? 'color:#cbd5e1;' : '' }}">{{ $val > 0 ? number_format($val, 0, ',', '.') : '-' }}</span>
-                                        </div>
-                                    </td>
-                                @endforeach
-                            </tr>
+    @if($selectedYear == 'All Years')
+        <table class="ss4-table" id="tableSs4">
+            <thead>
+                <tr>
+                    <th class="col-check" style="background:#f1f5f9; z-index:20;">
+                        <input type="checkbox" id="chkSelectAll" title="Pilih Semua">
+                    </th>
+                    <th style="min-width:120px; z-index:20;">Bulan</th>
+                    @foreach($dropdownYears as $yr) <th>{{ $yr }}</th> @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @php $months = [1=>'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']; @endphp
+                @foreach($months as $num => $mName)
+                    <tr>
+                        <td class="col-check"><i class="fa-solid fa-arrow-right" style="color:#cbd5e1;"></i></td>
+                        <td style="text-align:left; font-weight:600;">{{ $mName }}</td>
+                        @foreach($dropdownYears as $yr)
+                            @php 
+                                $val = $matrix[$num][$yr]['val'] ?? 0; 
+                                $id  = $matrix[$num][$yr]['id'] ?? null;
+                            @endphp
+                            <td>
+                                <div style="display:flex; justify-content:center; align-items:center; gap:5px;">
+                                    @if($id && auth()->user()->role == 'admin') <input type="checkbox" name="ids[]" value="{{ $id }}" class="chk-item col-check"> @endif
+                                    <span style="{{ $val==0 ? 'color:#cbd5e1;' : '' }}">{{ $val > 0 ? number_format($val, 0, ',', '.') : '-' }}</span>
+                                </div>
+                            </td>
                         @endforeach
-                        <tr style="background: #f8fafc;">
-                            <td class="col-check"></td>
-                            <td style="text-align:left; color:#1e293b;">TOTAL TAHUNAN</td>
-                            @foreach($dropdownYears as $yr)
-                                <td style="font-weight:900; color:#2563eb;">
-                                    {{ isset($totalPerTahun[$yr]) && $totalPerTahun[$yr] > 0 ? number_format($totalPerTahun[$yr], 0, ',', '.') : '-' }}
-                                </td>
-                            @endforeach
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        </form>
+                    </tr>
+                @endforeach
+                <tr style="background: #f8fafc;">
+                    <td class="col-check"></td>
+                    <td style="text-align:left; color:#1e293b;">TOTAL TAHUNAN</td>
+                    @foreach($dropdownYears as $yr)
+                        <td style="font-weight:900; color:#2563eb;">
+                            {{ isset($totalPerTahun[$yr]) && $totalPerTahun[$yr] > 0 ? number_format($totalPerTahun[$yr], 0, ',', '.') : '-' }}
+                        </td>
+                    @endforeach
+                </tr>
+            </tbody>
+        </table>
 
     @else
-        <div class="empty-state-box">
-            <i class="fa-regular fa-folder-open" style="font-size: 3.5rem; color: #cbd5e1;"></i>
-            <h3 style="margin:0; color: #64748b;">Belum ada data</h3>
-            <p style="margin:5px 0 0 0; color: #94a3b8;">Silakan Import CSV atau Input Manual.</p>
-            @if(auth()->user()->role == 'admin')
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button onclick="openEditModal()" class="btn-action btn-edit"><i class="fa-solid fa-plus-circle"></i> Input Manual</button>
-                <button onclick="document.getElementById('uploadModal').style.display='flex'" class="btn-action btn-blue"><i class="fa-solid fa-file-csv"></i> Import CSV</button>
-            </div>
-            @endif
-        </div>
+        <table class="ss4-table" id="tableSs4">
+            <thead>
+                <tr>
+                    <th class="col-check" style="background:#f1f5f9; z-index:20;">
+                        <input type="checkbox" id="chkSelectAll" title="Pilih Semua">
+                    </th>
+                    <th style="min-width:120px; z-index:20;">Bulan</th>
+                    <th>PKT (kWh)</th>
+                    <th>KDM (kWh)</th>
+                    <th>Total (kWh)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($tableData as $row)
+                    <tr>
+                        <td class="col-check">
+                            @if($row['id'] && auth()->user()->role == 'admin') 
+                                <div style="display:flex; justify-content:center;">
+                                    <input type="checkbox" name="ids[]" value="{{ $row['id'] }}" class="chk-item col-check">
+                                </div>
+                            @else
+                                <i class="fa-solid fa-arrow-right" style="color:#cbd5e1;"></i>
+                            @endif
+                        </td>
+                        <td style="text-align:left; font-weight:600;">{{ $row['label'] }} {{ $selectedYear }}</td>
+                        <td>{{ $row['pkt'] > 0 ? number_format($row['pkt'], 0, ',', '.') : '-' }}</td>
+                        <td>{{ $row['kdm'] > 0 ? number_format($row['kdm'], 0, ',', '.') : '-' }}</td>
+                        <td style="font-weight:bold; color:#2563eb;">{{ $row['total'] > 0 ? number_format($row['total'], 0, ',', '.') : '-' }}</td>
+                    </tr>
+                @endforeach
+                <tr style="background: #f8fafc;">
+                    <td class="col-check"></td>
+                    <td style="text-align:left; color:#1e293b;">TOTAL {{ $selectedYear }}</td>
+                    <td style="font-weight:bold;">{{ number_format(array_sum(array_column($tableData, 'pkt')), 0, ',', '.') }}</td>
+                    <td style="font-weight:bold;">{{ number_format(array_sum(array_column($tableData, 'kdm')), 0, ',', '.') }}</td>
+                    <td style="font-weight:900; color:#2563eb;">{{ number_format($grandTotal, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
     @endif
 </div>
 
