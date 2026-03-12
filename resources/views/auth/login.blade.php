@@ -22,6 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Mencegah scroll tersembunyi */
             overflow: hidden; 
         }
 
@@ -44,14 +45,15 @@
             z-index: 1;
         }
 
-        /* PERBAIKAN FOTO: Dinaikkan lagi dan bayangan ditipiskan */
+        /* HEADER FOTO DIPENDEKKAN & DI-CROP ATASNYA */
         .login-header-image {
             width: 100%;
+            /* Mengubah aspect-ratio menjadi fixed height agar tidak kepanjangan */
             height: 160px; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            /* 1. Fokus dinaikkan kembali ke atas (sebelumnya 70%) */
-            background-position: center 20%; 
+            /* Menggeser fokus foto ke bawah (memotong bagian atas) */
+            background-position: center 70%; 
             position: relative;
         }
 
@@ -59,8 +61,7 @@
             content: '';
             position: absolute;
             bottom: 0; left: 0; width: 100%; 
-            /* 2. Tinggi bayangan putih dikurangi drastis (sebelumnya 35%) */
-            height: 15%; 
+            height: 35%; 
             background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         }
 
@@ -73,44 +74,24 @@
             z-index: 2; 
         }
 
+        /* GRUP JUDUL & LOGO KIRI KANAN */
         .header-title-wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            /* 3. Margin ditarik sedikit ke atas agar menyatu dengan sisa fade putih */
-            margin-top: -15px; 
-            margin-bottom: 25px;
-            width: 100%;
+            justify-content: space-between; /* Menjauhkan logo ke sisi kiri & kanan */
+            margin-top: -30px; /* Menarik elemen ke atas menyatu dengan fade foto */
+            margin-bottom: 20px;
         }
 
-        .logo-kiri, .logo-kanan {
-            flex: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-kiri {
-            justify-content: flex-start;
-        }
-
-        .logo-kanan {
-            justify-content: flex-end;
-        }
-
-        .logo-kiri img {
-            height: 45px; 
+        .header-title-wrapper img {
+            max-height: 45px; /* Menjaga ukuran logo agar rapi */
             width: auto;
             object-fit: contain;
-        }
-
-        .logo-kanan img {
-            height: 28px; /* Tetap kecil sesuai permintaan sebelumnya */
-            width: auto;
-            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         .title-text-group {
-            flex: 3; 
+            flex-grow: 1;
             text-align: center;
             padding: 0 10px;
         }
@@ -227,8 +208,9 @@
             .login-title {
                 font-size: 1.1rem;
             }
-            .logo-kiri img { height: 35px; }
-            .logo-kanan img { height: 22px; }
+            .header-title-wrapper img {
+                max-height: 35px; /* Logo sedikit dikecilkan di HP */
+            }
         }
     </style>
 </head>
@@ -243,18 +225,14 @@
         <div class="login-form-container">
             
             <div class="header-title-wrapper">
-                <div class="logo-kiri">
-                    <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
-                </div>
+                <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
                 
                 <div class="title-text-group">
                     <h1 class="login-title">Manajemen Aset</h1>
                     <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
                 </div>
 
-                <div class="logo-kanan">
-                    <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
-                </div>
+                <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
             </div>
 
             @if($errors->any())
