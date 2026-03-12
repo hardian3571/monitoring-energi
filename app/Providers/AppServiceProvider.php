@@ -22,9 +22,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        // TAMBAHKAN BARIS INI:
-        Schema::defaultStringLength(191); 
+   public function boot()
+{
+    // Paksa semua URL/Form pakai HTTPS kalau tidak di mode lokal
+    if (config('app.env') !== 'local') {
+        \Illuminate\Support\Facades\URL::forceScheme('https');
     }
+}
 }
