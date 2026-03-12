@@ -11,7 +11,7 @@ class ListrikSs4Controller extends Controller
     public function index(Request $request)
     {
         // 1. SETUP TAHUN
-        $startYear = 2021;
+        $startYear = 2015;
         $endYear = 2030;
         $dropdownYears = range($startYear, $endYear);
         
@@ -26,7 +26,7 @@ class ListrikSs4Controller extends Controller
             $query->whereYear('record_date', $selectedYear);
             $targetYears = [$selectedYear];
         } else {
-            // Kalau All Years, ambil range 2021-2030
+            // Kalau All Years, ambil range 2015-2030
             $query->whereYear('record_date', '>=', $startYear)
                   ->whereYear('record_date', '<=', $endYear);
             $targetYears = $dropdownYears;

@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'username' => 'Username atau password salah, Bos!',
+            'username' => 'Username atau password salah',
         ]);
     }
 
