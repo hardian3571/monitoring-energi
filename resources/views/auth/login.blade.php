@@ -15,7 +15,7 @@
             min-height: 100vh;
             font-family: 'Inter', sans-serif;
             
-            /* BACKGROUND UTAMA: banner.jpg */
+            /* BACKGROUND UTAMA LUAR: banner.jpg */
             background-image: url('{{ asset("images/banner.jpg") }}');
             background-size: cover;
             background-position: center center;
@@ -27,80 +27,90 @@
             align-items: center;
         }
 
-        /* Overlay gelap untuk body agar Background Utama tidak terlalu mencolok */
+        /* Overlay gelap untuk memfokuskan mata ke kartu */
         .page-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.7); /* Biru gelap transparan */
+            background: rgba(15, 23, 42, 0.75);
             z-index: 0;
         }
 
-        /* CONTAINER KARTU LOGIN UTAMA */
+        /* KARTU LOGIN */
         .login-wrapper {
             display: flex;
-            flex-direction: row; 
+            flex-direction: column;
             width: 90%;
-            max-width: 1000px; 
-            background: rgba(255, 255, 255, 0.98);
+            max-width: 500px; /* Sedikit dilebarkan biar fotonya makin lega */
+            background: #ffffff;
             border-radius: 20px;
             overflow: hidden; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
             z-index: 1;
         }
 
-        /* SISI KIRI: BANNER bg-pkt.jpg */
-        .login-banner {
-            flex: 1.2; 
+        /* ========================================= */
+        /* HEADER FOTO (ANTI KEPOTONG)               */
+        /* ========================================= */
+        .login-header-image {
+            width: 100%;
+            /* Trik ajaib: Proporsi disamakan persis dengan ukuran asli gambar */
+            aspect-ratio: 2116 / 1190; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            background-position: center center;
+            background-position: center top; /* Fokus ke tengah-atas biar kepala aman */
             position: relative;
         }
 
-        .banner-overlay {
+        /* Efek Fade Out halus dari gambar ke putih form */
+        .login-header-image::after {
+            content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to right, rgba(234, 88, 12, 0.4), rgba(15, 23, 42, 0.2));
+            bottom: 0; left: 0; width: 100%; height: 40%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
         }
 
-        /* SISI KANAN: FORM LOGIN */
+        /* FORM LOGIN */
         .login-form-container {
-            flex: 1;
-            padding: 50px 40px;
+            padding: 0px 40px 40px 40px; /* Padding atas di-0 kan karena sudah ada efek fade */
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
+            z-index: 2; /* Biar tetap di atas efek fade */
         }
 
-        /* ========================================= */
-        /* CSS BARU UNTUK 2 LOGO BERDAMPINGAN        */
-        /* ========================================= */
+        /* WADAH LOGO */
         .logo-wrapper {
             display: flex;
             align-items: center;
-            gap: 20px; /* Jarak antara logo PKT dan logo Manset */
-            margin-bottom: 25px;
+            justify-content: center;
+            gap: 25px;
+            margin-top: -30px; /* Narik logo agak ke atas menabrak efek fade */
+            margin-bottom: 20px;
         }
 
         .logo-wrapper img {
-            max-height: 55px; /* Atur tinggi ini jika logo kekecilan/kebesaran */
+            max-height: 50px;
             width: auto;
             object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); /* Bayangan tipis di logo */
         }
 
         .login-title {
             margin: 0 0 5px 0;
             color: #1e293b;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             text-transform: uppercase;
+            text-align: center;
         }
 
         .login-subtitle {
-            margin: 0 0 30px 0;
+            margin: 0 0 25px 0;
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 600;
+            text-align: center;
         }
 
         /* Input Form */
@@ -167,7 +177,7 @@
             cursor: pointer;
             transition: 0.3s;
             box-shadow: 0 4px 6px rgba(234, 88, 12, 0.2);
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .btn-login:hover {
@@ -186,31 +196,24 @@
             margin-bottom: 20px;
             border: 1px solid #f87171;
             font-weight: 600;
+            text-align: center;
         }
 
         /* Footer */
         .login-footer {
-            margin-top: 30px;
+            margin-top: 25px;
             font-size: 0.75rem;
             color: #94a3b8;
-            text-align: left;
+            text-align: center;
         }
 
         /* RESPONSIVE UNTUK HP */
-        @media (max-width: 768px) {
-            .login-wrapper {
-                flex-direction: column; 
-                width: 95%;
-            }
-            .login-banner {
-                min-height: 200px; 
-                width: 100%;
-            }
+        @media (max-width: 480px) {
             .login-form-container {
-                padding: 30px 20px; 
+                padding: 0px 25px 30px 25px; 
             }
             .logo-wrapper {
-                justify-content: flex-start; /* Pastikan di HP tetap rata kiri */
+                margin-top: -20px;
             }
         }
     </style>
@@ -221,9 +224,7 @@
 
     <div class="login-wrapper">
         
-        <div class="login-banner">
-            <div class="banner-overlay"></div>
-        </div>
+        <div class="login-header-image"></div>
 
         <div class="login-form-container">
             
