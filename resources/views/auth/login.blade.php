@@ -16,8 +16,7 @@
             /* ======================================================= */
             /* GANTI URL DI BAWAH INI DENGAN PATH GAMBAR BACKGROUND MU */
             /* ======================================================= */
-            background-image: url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
+            background-image: url('{{ asset('images/bg-pabrik.jpg') }}');
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -171,7 +170,7 @@
     <div class="overlay">
         <div class="login-card">
             
-            <img src="https://upload.wikimedia.org/wikipedia/id/8/87/Logo_Pupuk_Kaltim.png" alt="Logo PKT" class="login-logo">
+            <img src="{{ asset('logo-pkt.png') }}" alt="Logo PKT" class="login-logo">
             
             <h1 class="login-title">Manajemen Aset</h1>
             <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
