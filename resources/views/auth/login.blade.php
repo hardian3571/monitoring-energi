@@ -22,7 +22,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Mencegah scroll tersembunyi */
             overflow: hidden; 
         }
 
@@ -45,14 +44,11 @@
             z-index: 1;
         }
 
-        /* HEADER FOTO DIPENDEKKAN & DI-CROP ATASNYA */
         .login-header-image {
             width: 100%;
-            /* Mengubah aspect-ratio menjadi fixed height agar tidak kepanjangan */
             height: 160px; 
             background-image: url('{{ asset("images/bg-pkt.jpeg") }}');
             background-size: cover;
-            /* Menggeser fokus foto ke bawah (memotong bagian atas) */
             background-position: center 70%; 
             position: relative;
         }
@@ -74,24 +70,46 @@
             z-index: 2; 
         }
 
-        /* GRUP JUDUL & LOGO KIRI KANAN */
+        /* PERBAIKAN GRUP JUDUL & LOGO */
         .header-title-wrapper {
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Menjauhkan logo ke sisi kiri & kanan */
-            margin-top: -30px; /* Menarik elemen ke atas menyatu dengan fade foto */
-            margin-bottom: 20px;
+            justify-content: space-between;
+            /* Margin dinaikkan dari -30px ke -5px agar ada gap dengan background atas */
+            margin-top: -5px; 
+            margin-bottom: 25px;
+            width: 100%;
         }
 
-        .header-title-wrapper img {
-            max-height: 45px; /* Menjaga ukuran logo agar rapi */
+        /* Membagi ruang jadi 3 agar teks TENGAH SEMPURNA */
+        .logo-kiri, .logo-kanan {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-kiri {
+            justify-content: flex-start;
+        }
+
+        .logo-kanan {
+            justify-content: flex-end;
+        }
+
+        .logo-kiri img {
+            height: 45px; /* Logo PKT Kiri */
             width: auto;
             object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .logo-kanan img {
+            height: 28px; /* LOGO MANSET KANAN DIKECILKAN */
+            width: auto;
+            object-fit: contain;
         }
 
         .title-text-group {
-            flex-grow: 1;
+            flex: 3; /* Memberi ruang lebih besar untuk teks di tengah */
             text-align: center;
             padding: 0 10px;
         }
@@ -111,6 +129,7 @@
             font-weight: 600;
         }
 
+        /* SISA CSS TETAP SAMA */
         .input-group {
             margin-bottom: 18px;
             position: relative;
@@ -208,9 +227,8 @@
             .login-title {
                 font-size: 1.1rem;
             }
-            .header-title-wrapper img {
-                max-height: 35px; /* Logo sedikit dikecilkan di HP */
-            }
+            .logo-kiri img { height: 35px; }
+            .logo-kanan img { height: 22px; }
         }
     </style>
 </head>
@@ -225,14 +243,18 @@
         <div class="login-form-container">
             
             <div class="header-title-wrapper">
-                <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
+                <div class="logo-kiri">
+                    <img src="{{ asset('images/logo-pkt.png') }}" alt="Logo PKT">
+                </div>
                 
                 <div class="title-text-group">
                     <h1 class="login-title">Manajemen Aset</h1>
                     <p class="login-subtitle">PT. Pupuk Kalimantan Timur</p>
                 </div>
 
-                <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
+                <div class="logo-kanan">
+                    <img src="{{ asset('images/logo-manset.png') }}" alt="Logo Manajemen Aset">
+                </div>
             </div>
 
             @if($errors->any())
