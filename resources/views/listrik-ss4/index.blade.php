@@ -327,29 +327,50 @@
     // 2. SETUP CHART TOTAL TAHUNAN (YANG BARU)
     const ctxTotal = document.getElementById('chartTotalSs4');
     if(ctxTotal && window.totalPerTahun) {
-        // Karena object JS tidak selalu urut, kita pastikan array-nya urut berdasarkan tahun
         const sortedYears = Object.keys(window.totalPerTahun).sort();
-        const dataValues = sortedYears.map(year => window.totalPerTahun[year]);
+        const datasetsTotal = [];
+        let colorIdxTotal = 0;
+
+        sortedYears.forEach((year, index) => {
+            // Bikin array kosong (null) sejumlah total tahun yang ada
+            const dataArr = new Array(sortedYears.length).fill(null);
+            // Isi nilainya hanya di urutan (index) tahun yang bersangkutan
+            dataArr[index] = window.totalPerTahun[year];
+
+            datasetsTotal.push({
+                label: year,
+                data: dataArr,
+                backgroundColor: window.chartColors[colorIdxTotal % window.chartColors.length],
+                borderRadius: 4,
+                borderWidth: 0,
+                barPercentage: 0.6,
+                categoryPercentage: 0.8
+            });
+            colorIdxTotal++;
+        });
 
         new Chart(ctxTotal.getContext('2d'), {
             type: 'bar',
             data: {
-                labels: sortedYears,
-                datasets: [{
-                    label: 'Total KWH',
-                    data: dataValues,
-                    backgroundColor: '#10b981', // Hijau keren
-                    borderRadius: 4,
-                    barPercentage: 0.6
-                }]
+                labels: sortedYears, // Sumbu X menampilkan daftar Tahun
+                datasets: datasetsTotal
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } }, // Sembunyikan legend karena hanya ada 1 dataset
+                plugins: { 
+                    legend: { display: true, position: 'top' } // Tampilkan legend tahun
+                }, 
                 scales: {
-                    x: { grid: { display: false } },
-                    y: { beginAtZero: true, grid: { color: '#f1f5f9' } }
+                    x: { 
+                        grid: { display: false },
+                        stacked: true // Trik supaya bar posisinya di tengah (sejajar dgn label)
+                    },
+                    y: { 
+                        beginAtZero: true, 
+                        grid: { color: '#f1f5f9' },
+                        stacked: true
+                    }
                 },
                 interaction: { mode: 'index', intersect: false }
             }
